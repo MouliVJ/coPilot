@@ -15,13 +15,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 200,
-    // backgroundColor: 'red',
     color: 'pink',
   },
+
   text: {
     fontSize: 24,
     fontWeight: 'bold',
-    backgroundColor: 'yellow',
     color: 'blue',
   },
 });
