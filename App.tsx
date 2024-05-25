@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { enableScreens } from 'react-native-screens';
 import LandingPage from './src/screens/LandingPage';
 import SignupPage from './src/screens/SignUpPage';
+import ProfilePage from './src/screens/ProfilePage';
 
 enableScreens();
 
@@ -15,6 +16,7 @@ function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="SignupPage" component={SignupPage} />
+        <Stack.Screen name="ProfilePage" component={ProfilePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
