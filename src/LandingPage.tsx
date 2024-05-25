@@ -1,26 +1,36 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, Alert, StyleSheet, Dimensions } from 'react-native';
+import axios from 'axios';
 
 const LandingPage = () => {
   const [email, setEmail] = useState('');
 
   const handleContinue = () => {
-    Alert.alert('Email entered: ' + email);
+    axios.post(`http://10.0.2.2:8080/validateEmail`, { email })
+      .then(response => {
+        Alert.alert('Response: ' + response.data);
+      })
+      .catch(error => {
+        Alert.alert('Error: ' + error.message);
+      });
   };
+
+
+
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        onChangeText={setEmail}
-        value={email}
-        placeholder="Enter your email"
-        keyboardType="email-address"
-      />
-      <TouchableOpacity style={styles.button} onPress={handleContinue}>
-        <Text style={styles.buttonText}>Continue</Text>
-      </TouchableOpacity>
-    </View>
+    <TextInput
+      style={styles.input}
+      onChangeText={setEmail}
+      value={email}
+      placeholder="Enter your email"
+      keyboardType="email-address"
+    />
+    <TouchableOpacity style={styles.button} onPress={handleContinue}>
+      <Text style={styles.buttonText}>Continue</Text>
+    </TouchableOpacity>
+  </View>
   );
 };
 
