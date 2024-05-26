@@ -11,8 +11,11 @@ const LandingPage = ({ navigation }) => {
       .then(response => {
         if (response.data === 'Sign Up') {
           navigation.navigate('SignupPage', { email });
-        } else {
-          Alert.alert('Response: ' + response.data);
+        } else if (response.data === 'Sign In'){
+          navigation.navigate('LoginPage', { email });
+        }
+        else{
+          Alert.alert('Error: ' + response.data);
         }
       })
       .catch(error => {
