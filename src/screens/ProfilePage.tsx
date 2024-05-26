@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image } from 'react-native';
+import axios from 'axios';
+import { useRoute } from '@react-navigation/native';
 
 const ProfilePage = () => {
   const [selectedImage, setSelectedImage] = useState(require('../Assets/image1.png')); // Default image
+  const [profileImage, setProfileImage] = useState("1"); // Default image identifier
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [gender, setGender] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const route = useRoute();
+  const email = (route.params as { email?: string })?.email ?? '';
 
   const availableAvatars = [
-    require('../Assets/image1.png'),
-    require('../Assets/image2.png'),
-    require('../Assets/image3.png'),
-    require('../Assets/image4.png'),
+    { id: "1", source: require('../Assets/image1.png') },
+    { id: "2", source: require('../Assets/image2.png') },
+    { id: "3", source: require('../Assets/image3.png') },
+    { id: "4", source: require('../Assets/image4.png') },
   ];
 
   const handleImagePress = (image) => {
-    setSelectedImage(image);
+    setSelectedImage(image.source);
+    setProfileImage(image.id);
     setIsModalVisible(false);
   };
 
@@ -26,8 +32,29 @@ const ProfilePage = () => {
   };
 
   const handleSetProfile = () => {
-    // Implement profile setting logic here
-    console.log('Profile set!');
+    const profileData = {
+      email,
+      profileImage,
+      firstName,
+      secondName: lastName,
+      phoneNumber,
+      gender
+    };
+
+    axios.post('http://10.0.2.2:8080/setProfile', {
+      email,
+      profileImage,
+      firstName,
+      secondName: lastName,
+      phoneNumber,
+      gender
+    })
+      .then(response => {
+        console.log('Profile set!', response.data);
+      })
+      .catch(error => {
+        console.error('There was an error setting the profile!', error);
+      });
   };
 
   return (
@@ -44,9 +71,9 @@ const ProfilePage = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            {availableAvatars.map((avatar, index) => (
-              <TouchableOpacity key={index} onPress={() => handleImagePress(avatar)}>
-                <Image source={avatar} style={styles.modalAvatar} />
+            {availableAvatars.map((avatar) => (
+              <TouchableOpacity key={avatar.id} onPress={() => handleImagePress(avatar)}>
+                <Image source={avatar.source} style={styles.modalAvatar} />
               </TouchableOpacity>
             ))}
           </View>
