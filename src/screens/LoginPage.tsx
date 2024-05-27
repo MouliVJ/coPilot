@@ -1,9 +1,25 @@
-import React, { useState, } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 
-const LoginPage = () => {
+import React, { useState } from 'react';
+import { Alert,View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import axios from 'axios'; 
+import { useRoute } from '@react-navigation/native';
+
+const LoginPage = ({navigation}) => {
+  const [password, setPassword] = useState('');
+  const route = useRoute();
+  const email = (route.params as { email?: string })?.email ?? '';
   const handleLogin = () => {
-    // Add your login logic here
+    axios.post(`http://10.0.2.2:8080/login`, { email, password })
+    .then(response => {
+      Alert.alert('Response: ' + response.data);
+    })
+    .catch(error => {
+      if (error.response && error.response.status === 401) {
+        Alert.alert('Password / email incorrect');
+      } else {
+        Alert.alert('Error: ' + error.message);
+      }
+    });
   };
 
   return (

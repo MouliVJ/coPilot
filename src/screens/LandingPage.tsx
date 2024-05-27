@@ -5,7 +5,7 @@ import { Image } from 'react-native-elements';
 
 const LandingPage = ({ navigation }) => {
   const [email, setEmail] = useState('');
-
+  
   const handleContinue = () => {
     axios.post(`http://10.0.2.2:8080/validateEmail`, { email })
       .then(response => {
