@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Text, Alert, TouchableOpacity, StyleSheet } from 'react-native';
 import Checkbox from '@react-native-community/checkbox';
 import { useRoute } from '@react-navigation/native';
 import LandingPage from './LandingPage';
@@ -53,12 +53,27 @@ const SignUpPage = ({ navigation }) => {
         />
         <Text style={styles.checkboxLabel}>I accept the terms and conditions</Text>
       </View>
-      <Button title="Sign Up" onPress={handleSignUp} />
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+  <Text style={styles.buttonText}>Sign Up</Text>
+</TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  button: {
+      backgroundColor: '#E36607', // Orange color
+      padding: 10,
+      borderRadius: 5,
+      width: '30%',
+      alignItems: 'center',
+},
+buttonText: {
+      fontWeight: 'bold',
+      fontSize: 18,
+      color: 'white',
+      fontFamily: 'Satoshi',
+},
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -66,22 +81,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#071D21', // Dark background color
   },
   title: {
-    fontSize: 24,
+    fontSize: 25,
+    fontFamily: 'Satoshi',
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
+    fontFamily: 'Satoshi',
     color: 'white',
     marginBottom: 20,
   },
   changeLink: {
     color: '#E36607', // Orange color
     marginBottom: 20,
+    fontSize: 16,
+    fontFamily: 'Satoshi',
   },
   input: {
     backgroundColor: 'white',
+    fontFamily: 'Satoshi',
     width: '80%',
     height: 40,
     paddingHorizontal: 10,
@@ -96,6 +116,7 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     color: 'white',
     marginLeft: 10,
+    fontFamily: 'Satoshi',
   },
 });
 
