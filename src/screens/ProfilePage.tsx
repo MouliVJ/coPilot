@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image } fro
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 
-const ProfilePage = () => {
+const ProfilePage = ({navigation}) => {
   const [selectedImage, setSelectedImage] = useState(require('../Assets/image1.png')); // Default image
   const [profileImage, setProfileImage] = useState("1"); // Default image identifier
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -51,6 +51,7 @@ const ProfilePage = () => {
     })
       .then(response => {
         console.log('Profile set!', response.data);
+        navigation.navigate('HomePage');
       })
       .catch(error => {
         console.error('There was an error setting the profile!', error);

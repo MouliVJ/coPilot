@@ -1696,6 +1696,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo/vector-icons@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "@expo/vector-icons@npm:14.0.2"
+  dependencies:
+    prop-types: ^15.8.1
+  checksum: 49e27ff52eb138745313fa2c39863fb762230b0089b910d668d7f2c06b7e71a0249dc3a26bfc8725d07bdfaadab1dbcbce087b34dfc244b00a15fc02fe4866e2
+  languageName: node
+  linkType: hard
+
 "@hapi/hoek@npm:^9.0.0, @hapi/hoek@npm:^9.3.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
@@ -3768,9 +3777,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001587":
-  version: 1.0.30001621
-  resolution: "caniuse-lite@npm:1.0.30001621"
-  checksum: 0afb65bbf558faea769c16e831fbbd5600c684c0f6bb4ffbc0d38528671fb5cb5d88714804241a88c61872ce289f7c6333aef6cfdfb09277bda0dbdf0aab3459
+  version: 1.0.30001623
+  resolution: "caniuse-lite@npm:1.0.30001623"
+  checksum: 7653a34601c0b995c890e0c7ba79a2be5909153cd91069b992db1b25b481f4cb2775075f9d44fbf607f7754d08f4ecc519c2cde2c50171e12ddfab9bcf193e06
   languageName: node
   linkType: hard
 
@@ -3932,6 +3941,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@expo/vector-icons": ^14.0.2
     "@react-native-community/checkbox": ^0.5.17
     "@react-native/babel-preset": 0.74.83
     "@react-native/eslint-config": 0.74.83
