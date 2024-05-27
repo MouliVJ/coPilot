@@ -12,7 +12,7 @@ const ProfilePage = ({navigation}) => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const route = useRoute();
-  const email = (route.params as { email?: string })?.email ?? '';
+  const id = (route.params as { id?: string })?.id ?? '';
 
   const availableAvatars = [
     { id: "1", source: require('../Assets/image1.png') },
@@ -33,7 +33,7 @@ const ProfilePage = ({navigation}) => {
 
   const handleSetProfile = () => {
     const profileData = {
-      email,
+      id,
       profileImage,
       firstName,
       secondName: lastName,
@@ -42,7 +42,7 @@ const ProfilePage = ({navigation}) => {
     };
 
     axios.post('http://10.0.2.2:8080/setProfile', {
-      email,
+      id,
       profileImage,
       firstName,
       secondName: lastName,

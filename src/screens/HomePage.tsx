@@ -8,7 +8,7 @@ const HomePage = () => {
   const [userName, setUserName] = useState('User');
 
   useEffect(() => {
-    axios.get('http://localhost:8080/getname')
+    axios.get('http://localhost:8080/users/{id}/firstName')
       .then(response => {
         setUserName(response.data.name);
       });

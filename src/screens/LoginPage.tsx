@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 
 const LoginPage = () => {
-  const [password, setPassword] = useState('');
-
   const handleLogin = () => {
     // Add your login logic here
   };
