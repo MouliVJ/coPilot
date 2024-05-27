@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Alert,View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import axios from 'axios'; 
@@ -7,7 +8,6 @@ const LoginPage = ({navigation}) => {
   const [password, setPassword] = useState('');
   const route = useRoute();
   const email = (route.params as { email?: string })?.email ?? '';
-
   const handleLogin = () => {
     axios.post(`http://10.0.2.2:8080/login`, { email, password })
     .then(response => {

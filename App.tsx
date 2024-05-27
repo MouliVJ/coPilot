@@ -6,6 +6,7 @@ import LandingPage from './src/screens/LandingPage';
 import SignupPage from './src/screens/SignUpPage';
 import ProfilePage from './src/screens/ProfilePage';
 import LoginPage from './src/screens/LoginPage';
+import HomePage from './src/screens/HomePage';
 
 
 enableScreens();
@@ -20,6 +21,7 @@ function App() {
         <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="ProfilePage" component={ProfilePage} />
+        <Stack.Screen name="HomePage" component={HomePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

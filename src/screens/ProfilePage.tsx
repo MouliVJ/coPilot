@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image } fro
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 
-const ProfilePage = () => {
+const ProfilePage = ({navigation}) => {
   const [selectedImage, setSelectedImage] = useState(require('../Assets/image1.png')); // Default image
   const [profileImage, setProfileImage] = useState("1"); // Default image identifier
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -12,7 +12,7 @@ const ProfilePage = () => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const route = useRoute();
-  const email = (route.params as { email?: string })?.email ?? '';
+  const id = (route.params as { id?: string })?.id ?? '';
 
   const availableAvatars = [
     { id: "1", source: require('../Assets/image1.png') },
@@ -33,7 +33,7 @@ const ProfilePage = () => {
 
   const handleSetProfile = () => {
     const profileData = {
-      email,
+      id,
       profileImage,
       firstName,
       secondName: lastName,
@@ -42,7 +42,7 @@ const ProfilePage = () => {
     };
 
     axios.post('http://10.0.2.2:8080/setProfile', {
-      email,
+      id,
       profileImage,
       firstName,
       secondName: lastName,
@@ -51,6 +51,7 @@ const ProfilePage = () => {
     })
       .then(response => {
         console.log('Profile set!', response.data);
+        navigation.navigate('HomePage');
       })
       .catch(error => {
         console.error('There was an error setting the profile!', error);
