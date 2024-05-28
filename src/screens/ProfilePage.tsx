@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { Alert,View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import { API_URL } from '@env';
 
 const ProfilePage = ({navigation}) => {
   const [id, setId] = useState(null);
@@ -34,7 +35,7 @@ const ProfilePage = ({navigation}) => {
 
   useEffect(() => {
     console.log('Email:', email);
-    axios.get(`http://10.0.2.2:8080/users/id?email=${email}`)
+    axios.get(`${API_URL}/users/id?email=${email}`)
       .then(response => {    
        console.log('ID: ' + response.data);
         setId(response.data);
@@ -55,7 +56,7 @@ const ProfilePage = ({navigation}) => {
       gender
     };
 
-    axios.post('http://10.0.2.2:8080/setProfile', {
+    axios.post(`${API_URL}/setProfile`, {
       id,
       profileImage,
       firstName,

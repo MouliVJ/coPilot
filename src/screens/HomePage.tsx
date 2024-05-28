@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import { API_URL } from '@env';
 
-const HomePage = () => {
+const HomePage = ({navigation}) => {
   const [takeRidePressed, setTakeRidePressed] = useState(false);
   const [publishRidePressed, setPublishRidePressed] = useState(false);
   const [userName, setUserName] = useState('User');
@@ -11,14 +12,16 @@ const HomePage = () => {
   const id = (route.params as { id?: string })?.id ?? '';
 
   useEffect(() => {
-    axios.get('http://localhost:8080/users/{id}/firstName')
+    axios.get(`${API_URL}/users/{id}/firstName`)
       .then(response => {
         setUserName(response.data.name);
       });
   }, []);
 
   const handleTakeRidePress = () => {
-    setTakeRidePressed(!takeRidePressed);
+    navigation.navigate('TakeRidePage', { id });
+    console.log('Take Ride Pressed');
+   // setTakeRidePressed(!takeRidePressed);
   };
 
   const handlePublishRidePress = () => {

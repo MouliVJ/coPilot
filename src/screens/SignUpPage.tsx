@@ -4,6 +4,7 @@ import Checkbox from '@react-native-community/checkbox';
 import { useRoute } from '@react-navigation/native';
 import LandingPage from './LandingPage';
 import axios from 'axios';
+import { API_URL } from '@env';
 
 const SignUpPage = ({ navigation }) => {
   const [password, setPassword] = useState('');

@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react';
 import { Alert,View, TextInput, TouchableOpacity, Button, Text, StyleSheet } from 'react-native';
 import axios from 'axios'; 
 import { useRoute } from '@react-navigation/native';
+import { API_URL } from '@env';
 
 const LoginPage = ({navigation}) => {
   const [id, setId] = useState(null);
@@ -13,7 +14,7 @@ const LoginPage = ({navigation}) => {
 
   useEffect(() => {
     console.log('Email:', email);
-    axios.get(`http://10.0.2.2:8080/users/id?email=${email}`)
+    axios.get(`${API_URL}/users/id?email=${email}`)
       .then(response => {    
        console.log('ID: ' + response.data);
         setId(response.data);
@@ -24,7 +25,7 @@ const LoginPage = ({navigation}) => {
   }, []);
 
   const handleLogin = () => {
-    axios.post(`http://10.0.2.2:8080/login`, { id, password })
+    axios.post(`${API_URL}/login`, { id, password })
     .then(response => {
       navigation.navigate('HomePage', { id });
     })
