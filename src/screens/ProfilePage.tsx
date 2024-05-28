@@ -126,7 +126,7 @@ const ProfilePage = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E36607',
+    backgroundColor: '#071D21',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   genderButton: {
-    backgroundColor: 'white',
+    backgroundColor: '#071D21',
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 10,
@@ -169,10 +169,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   genderButtonSelected: {
-    backgroundColor: '#071D21',
+    backgroundColor: '#E36607',
   },
   genderText: {
-    color: '#071D21',
+    color: 'white',
+    fontFamily: 'Satoshi',
   },
   genderTextSelected: {
     color: 'white',
@@ -184,9 +185,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     marginBottom: 10,
+    fontFamily: 'Satoshi'
   },
   button: {
-    backgroundColor: '#071D21',
+    backgroundColor: '#E36607',
     borderRadius: 7,
     width: '100%',
     height: 50,
@@ -197,6 +199,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    fontFamily: 'Satoshi',
+    fontSize: 20,
   },
 });
 

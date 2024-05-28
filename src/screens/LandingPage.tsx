@@ -7,6 +7,11 @@ const LandingPage = ({ navigation }) => {
   const [email, setEmail] = useState('');
   
   const handleContinue = () => {
+    if (!email.endsWith('@comcast.com')) {
+      Alert.alert('Please enter a valid email address');
+      return;
+    }
+    
     axios.post(`http://10.0.2.2:8080/validateEmail`, { email })
       .then(response => {
         if (response.data === 'Sign Up') {
@@ -25,7 +30,7 @@ const LandingPage = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <Image source={require('../Assets/image1.png')} style={{ width: 200, height: 200 }} />
+      <Image source={require('../Assets/image5.png')} style={{ width: 200, height: 200 }} />
       <Text style={styles.findYourNextText}>Find your next</Text>
       <Text style={styles.sharedRideText}>Shared Ride</Text>
       <Text style={styles.welcomeText}>Welcome, Let’s get started</Text>
@@ -54,23 +59,25 @@ const styles = StyleSheet.create({
   },
   findYourNextText: {
     fontFamily: "Satoshi",
-    fontSize: 40,
+    fontSize: 23,
     fontWeight: "400",
     color: 'rgba(255, 255, 255, 0.6)', // 60% opacity white
     textAlign: "center",
     marginBottom: 20,
   },
   sharedRideText: {
-    color: 'white',
+    color: '#99ffdd',
     fontWeight: '500', // Medium
-    fontSize: 40,
+    fontSize: 30,
+    fontFamily: "Satoshi",
     textAlign: 'center',
     marginBottom: 20,
   },
   welcomeText: {
     color: 'rgba(255, 255, 255, 0.8)',
+    fontFamily: "Satoshi",
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: 18,
   },
   input: {
     backgroundColor: 'white',
@@ -92,6 +99,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    fontFamily: "Satoshi",
+    fontSize: 20,
   },
 });
 
