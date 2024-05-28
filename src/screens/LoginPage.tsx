@@ -1,6 +1,6 @@
 
 import React, { useState,useEffect } from 'react';
-import { Alert,View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { Alert,View, TextInput, TouchableOpacity, Button, Text, StyleSheet } from 'react-native';
 import axios from 'axios'; 
 import { useRoute } from '@react-navigation/native';
 
@@ -53,7 +53,11 @@ const LoginPage = ({navigation}) => {
         Forgot Password?
       </Text>
 
-      <Button title="Login" onPress={handleLogin} />
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      {/* <Button title="Login" onPress={handleLogin} /> */}
 
       {/* Add other components as needed */}
     </View>
@@ -61,6 +65,19 @@ const LoginPage = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#E36607', // Orange color
+    padding: 10,
+    borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white',
+    fontFamily: 'Satoshi',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -69,8 +86,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
+    fontFamily: 'Satoshi',
     color: 'white',
     marginBottom: 20,
   },
@@ -78,6 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '100%',
     height: 40,
+    fontFamily: 'Satoshi',
     paddingHorizontal: 10,
     marginBottom: 20,
     borderRadius: 5,
@@ -85,6 +104,8 @@ const styles = StyleSheet.create({
   forgotPassword: {
     color: '#E36607', // Orange color
     marginBottom: 20,
+    fontFamily: 'Satoshi',
+    fontSize: 15,
     textAlign: 'right',
     width: '100%',
   },
