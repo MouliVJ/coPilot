@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
+import { useRoute } from '@react-navigation/native';
 
 const HomePage = () => {
   const [takeRidePressed, setTakeRidePressed] = useState(false);
   const [publishRidePressed, setPublishRidePressed] = useState(false);
   const [userName, setUserName] = useState('User');
+  const route = useRoute();
+  const id = (route.params as { id?: string })?.id ?? '';
 
   useEffect(() => {
     axios.get('http://localhost:8080/users/{id}/firstName')

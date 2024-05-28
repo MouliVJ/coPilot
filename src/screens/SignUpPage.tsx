@@ -6,21 +6,17 @@ import LandingPage from './LandingPage';
 import axios from 'axios';
 
 const SignUpPage = ({ navigation }) => {
-  const [id, setId] = useState(null);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [termsChecked, setTermsChecked] = useState(false);
   const route = useRoute();
   const email = (route.params as { email?: string })?.email ?? '';
 
-
-  // ...
-
   const handleSignUp = () => {
-    axios.post(`http://10.0.2.2:8080/signup`, { id , password})
+    axios.post(`http://10.0.2.2:8080/signup`, { email , password})
       .then(response => {    
         if (response.data === 'Success') {  
-          navigation.navigate('ProfilePage');
+          navigation.navigate('ProfilePage', { email });
         }
       })
       .catch(error => {

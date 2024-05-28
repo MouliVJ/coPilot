@@ -1,21 +1,36 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Alert,View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import axios from 'axios'; 
 import { useRoute } from '@react-navigation/native';
 
 const LoginPage = ({navigation}) => {
+  const [id, setId] = useState(null);
   const [password, setPassword] = useState('');
   const route = useRoute();
   const email = (route.params as { email?: string })?.email ?? '';
+
+
+  useEffect(() => {
+    console.log('Email:', email);
+    axios.get(`http://10.0.2.2:8080/users/id?email=${email}`)
+      .then(response => {    
+       console.log('ID: ' + response.data);
+        setId(response.data);
+      })
+      .catch(error => {
+        Alert.alert('Error fetching id: ' + error.message);
+      });
+  }, []);
+
   const handleLogin = () => {
-    axios.post(`http://10.0.2.2:8080/login`, { email, password })
+    axios.post(`http://10.0.2.2:8080/login`, { id, password })
     .then(response => {
-      Alert.alert('Response: ' + response.data);
+      navigation.navigate('HomePage', { id });
     })
     .catch(error => {
       if (error.response && error.response.status === 401) {
-        Alert.alert('Password / email incorrect');
+        Alert.alert('Password incorrect');
       } else {
         Alert.alert('Error: ' + error.message);
       }

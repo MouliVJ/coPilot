@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image } from 'react-native';
+import React, { useState,useEffect } from 'react';
+import { Alert,View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 
 const ProfilePage = ({navigation}) => {
+  const [id, setId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(require('../Assets/image1.png')); // Default image
   const [profileImage, setProfileImage] = useState("1"); // Default image identifier
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -12,7 +13,7 @@ const ProfilePage = ({navigation}) => {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const route = useRoute();
-  const id = (route.params as { id?: string })?.id ?? '';
+  const email = (route.params as { email?: string })?.email ?? '';
 
   const availableAvatars = [
     { id: "1", source: require('../Assets/image1.png') },
@@ -30,6 +31,19 @@ const ProfilePage = ({navigation}) => {
   const handleGenderSelect = (selectedGender) => {
     setGender(selectedGender);
   };
+
+  useEffect(() => {
+    console.log('Email:', email);
+    axios.get(`http://10.0.2.2:8080/users/id?email=${email}`)
+      .then(response => {    
+       console.log('ID: ' + response.data);
+        setId(response.data);
+      })
+      .catch(error => {
+        Alert.alert('Error fetching id: ' + error.message);
+      });
+  }, []);
+
 
   const handleSetProfile = () => {
     const profileData = {
@@ -51,7 +65,7 @@ const ProfilePage = ({navigation}) => {
     })
       .then(response => {
         console.log('Profile set!', response.data);
-        navigation.navigate('HomePage');
+        navigation.navigate('HomePage', { id });
       })
       .catch(error => {
         console.error('There was an error setting the profile!', error);
