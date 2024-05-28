@@ -25,16 +25,16 @@ const LoginPage = ({navigation}) => {
 
   const handleLogin = () => {
     axios.post(`http://10.0.2.2:8080/login`, { id, password })
-    .then(response => {
-      navigation.navigate('HomePage', { id });
-    })
-    .catch(error => {
-      if (error.response && error.response.status === 401) {
-        Alert.alert('Password incorrect');
-      } else {
-        Alert.alert('Error: ' + error.message);
-      }
-    });
+      .then(response => {
+        navigation.navigate('HomePage', { id });
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 401) {
+          Alert.alert('Password incorrect');
+        } else {
+          Alert.alert('Error: ' + error.message);
+        }
+      });
   };
 
   return (
