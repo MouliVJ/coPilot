@@ -14,7 +14,8 @@ import TakeRidePage from './src/screens/TakeRidePage';
 import PublishRidePage from './src/screens/PublishRidePage';
 import AddVehiclePage from './src/screens/AddVehiclePage';
 import ZeroPage from './src/screens/ZeroPage';
-import TestPage from './src/screens/TestPage';
+import RideDetailsPage from './src/screens/RideDetailsPage';
+import PickRidePage from './src/screens/PickRidePage';
 
 enableScreens();
 
@@ -36,6 +37,7 @@ function App() {
           
         })}
       >
+        {/* <Stack.Screen name="TestPage" component={TestPage} /> */}
         <Stack.Screen name="LandingPage" component={LandingPage} />
         <Stack.Screen name="SignupPage" component={SignupPage} />
         <Stack.Screen name="LoginPage" component={LoginPage} />
@@ -44,6 +46,8 @@ function App() {
         <Stack.Screen name="TakeRidePage" component={TakeRidePage} />
         <Stack.Screen name="PublishRidePage" component={PublishRidePage} />
         <Stack.Screen name="AddVehiclePage" component={AddVehiclePage} />
+        <Stack.Screen name="PickRidePage" component={PickRidePage} />
+        <Stack.Screen name="RideDetailsPage" component={RideDetailsPage} />
         {/* Add more screens as needed */}
       </Stack.Navigator>
     </NavigationContainer>
@@ -62,12 +66,15 @@ const BackButton = () => {
   );
 };
 const MenuButton = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.buttonContainer1}>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <Image source={require('./src/Assets/menu.png')} style={{ width: 24, height: 24, tintColor: '#FFF' }} />
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+       <Text onPress={() => navigation.navigate('LandingPage')} style={styles.logout}>Logout</Text>
+     </View>
+    
   );
 };
 
@@ -82,6 +89,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
+    color: 'white', 
     // left: 10,
     // top: 15,
   },
@@ -90,6 +98,11 @@ const styles = StyleSheet.create({
      right: 8,
     // top: 10,
   },
+  logout:{
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  }
  
 });
 

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
+  Alert,
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
@@ -13,7 +14,7 @@ import { API_URL } from '@env';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRoute } from '@react-navigation/native';
 
-const PublishRidePage = () => {
+const PublishRidePage = ({navigation}) => {
   const [selectedFrom, setSelectedFrom] = useState('');
   const [selectedTo, setSelectedTo] = useState('');
   const [date, setDate] = useState(new Date());
@@ -23,8 +24,7 @@ const PublishRidePage = () => {
   const [data, setData] = useState([]);
   const route = useRoute();
   const id = (route.params as { id?: string })?.id ?? '';
-  const vechileId = (route.params as { vechileId?: string })?.vechileId ?? '';
-  
+  const vehicleId = (route.params as { selectedVehicleId?: string })?.selectedVehicleId ?? '';
   useEffect(() => {
     axios.get(`${API_URL}/getNodalPoints`)
       .then(response => {
@@ -75,17 +75,19 @@ const PublishRidePage = () => {
       time.getSeconds()
     );
 
-    const requestBody = {
-        id: id,
-        vechileId: vechileId,
-      from: selectedFrom,
-      to: selectedTo,
-      dateTime: combinedDateTime.toISOString(), // Keep in local time zone before converting to ISO string
+    const rider = {
+        userId: id,
+        vehicleId: vehicleId.toString(),
+        from: selectedFrom,
+        to: selectedTo,
+        dateTime: combinedDateTime.toISOString(), // Keep in local time zone before converting to ISO string
     };
-    console.log('Request:', requestBody);
-    axios.post(`${API_URL}/publishRide`, requestBody)
+    console.log('Publish ride Request:', rider);
+    axios.post(`${API_URL}/publishRide`, rider)
         .then(response => {
         console.log('Response:', response.data);
+        Alert.alert('Ride Published Successfully');
+        navigation.navigate('HomePage',{id})
         })
         .catch(error => {
         console.error('Error:', error);

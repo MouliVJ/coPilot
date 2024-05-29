@@ -51,7 +51,7 @@ const ProfilePage = ({navigation}) => {
       id,
       profileImage,
       firstName,
-      secondName: lastName,
+      lastName,
       phoneNumber,
       gender
     };
@@ -60,7 +60,7 @@ const ProfilePage = ({navigation}) => {
       id,
       profileImage,
       firstName,
-      secondName: lastName,
+      lastName,
       phoneNumber,
       gender
     })

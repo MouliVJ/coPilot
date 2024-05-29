@@ -13,7 +13,7 @@ import { API_URL } from '@env';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRoute } from '@react-navigation/native';
 
-const TakeRidePage = () => {
+const TakeRidePage = ({navigation}) => {
   const [selectedFrom, setSelectedFrom] = useState('');
   const [selectedTo, setSelectedTo] = useState('');
   const [date, setDate] = useState(new Date());
@@ -83,6 +83,8 @@ const TakeRidePage = () => {
     console.log('Request:', requestBody);
     axios.post(`${API_URL}/takeRide`, requestBody)
         .then(response => {
+          const rides = response.data;
+          navigation.navigate('PickRidePage', { id,rides })
         console.log('Response:', response.data);
         })
         .catch(error => {

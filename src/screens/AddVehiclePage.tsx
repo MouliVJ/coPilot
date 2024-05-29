@@ -5,7 +5,7 @@ import axios from 'axios';
 import { API_URL } from '@env';
 
 const AddVehiclePage = ({ navigation }) => {
-  const [vehicleType, setVehicleType] = useState('Bike');
+  const [vehicleType, setVehicleType] = useState('bike');
   const [vehicleNumber, setVehicleNumber] = useState('');
   const route = useRoute();
   const userId = (route.params as { userId?: string })?.userId ?? '';
@@ -37,24 +37,26 @@ const AddVehiclePage = ({ navigation }) => {
             console.error('Error:', error);
             });
     // Clear input fields after adding the vehicle
-    setVehicleType('Bike');
+    setVehicleType('bike');
     setVehicleNumber('');
+    Alert.alert('Vehicle added successfully');
+    navigation.navigate('HomePage',{id:userId});
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.radioContainer}>
         <TouchableOpacity
-          style={[styles.radioOption, vehicleType === 'Bike' ? styles.radioOptionSelected : null]}
-          onPress={() => setVehicleType('Bike')}
+          style={[styles.radioOption, vehicleType === 'bike' ? styles.radioOptionSelected : null]}
+          onPress={() => setVehicleType('bike')}
         >
-          <Text style={[styles.radioText, vehicleType === 'Bike' ? styles.radioTextSelected : null]}>Bike</Text>
+          <Text style={[styles.radioText, vehicleType === 'bike' ? styles.radioTextSelected : null]}>Bike</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.radioOption, vehicleType === 'Car' ? styles.radioOptionSelected : null]}
-          onPress={() => setVehicleType('Car')}
+        style={[styles.radioOption, vehicleType === 'car' ? styles.radioOptionSelected : null]}
+        onPress={() => setVehicleType('car')}
         >
-          <Text style={[styles.radioText, vehicleType === 'Car' ? styles.radioTextSelected : null]}>Car</Text>
+        <Text style={[styles.radioText]}>Car</Text>
         </TouchableOpacity>
       </View>
 

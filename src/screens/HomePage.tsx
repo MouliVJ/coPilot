@@ -21,6 +21,7 @@ const HomePage = ({ navigation }) => {
   const route = useRoute();
   const id = (route.params as { id?: string })?.id ?? '';
 
+  console.log(`${API_URL}/users/${id}/firstname`);
   useEffect(() => {
     axios
       .get(`${API_URL}/users/${id}/firstname`)
@@ -56,15 +57,18 @@ const HomePage = ({ navigation }) => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
+    setPublishRidePressed(publishRidePressed);
   };
 
   const handleSelectVehicle = () => {
     setModalVisible(false);
-    navigation.navigate('PublishRidePage', { id, vehicleId: selectedVehicleId });
+    console.log('Vehicle Id:', selectedVehicleId);
+    navigation.navigate('PublishRidePage', { id, selectedVehicleId });
   };
 
   const handleAddVehiclePress = () => {
     navigation.navigate('AddVehiclePage', { userId: id });
+    setPublishRidePressed(publishRidePressed);
   };
 
   return (
@@ -106,6 +110,7 @@ const HomePage = ({ navigation }) => {
                       style={styles.vehicleItem}
                       onPress={() => setSelectedVehicleId(vehicle.vehicleId)}
                     >
+                      
                       <View style={styles.radioButton}>
                         {selectedVehicleId === vehicle.vehicleId && (
                           <View style={styles.radioButtonSelected} />
