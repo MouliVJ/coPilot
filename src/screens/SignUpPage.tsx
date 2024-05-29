@@ -14,7 +14,33 @@ const SignUpPage = ({ navigation }) => {
   const email = (route.params as { email?: string })?.email ?? '';
 
   const handleSignUp = () => {
-    axios.post(`http://10.0.2.2:8080/signup`, { email , password})
+    const minPasswordLength = 6;
+    const maxPasswordLength = 20;
+
+    // Password length validation
+    if (password.length < minPasswordLength || password.length > maxPasswordLength) {
+      Alert.alert(`Password must be between ${minPasswordLength} and ${maxPasswordLength} characters.`);
+      return;
+    }
+
+    // Basic validation
+    if (!password || !confirmPassword) {
+      Alert.alert('Please enter both password and confirm password.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Passwords do not match.');
+      return;
+    }
+
+    if (!termsChecked) {
+      Alert.alert('Please accept the terms and conditions.');
+      return;
+    }
+
+    // If validation passes, proceed with signup
+    axios.post(`http://10.0.2.2:8080/signup`, { email, password })
       .then(response => {    
         if (response.data === 'Success') {  
           navigation.navigate('ProfilePage', { email });
@@ -55,26 +81,26 @@ const SignUpPage = ({ navigation }) => {
         <Text style={styles.checkboxLabel}>I accept the terms and conditions</Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-  <Text style={styles.buttonText}>Sign Up</Text>
-</TouchableOpacity>
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-      backgroundColor: '#E36607', // Orange color
-      padding: 10,
-      borderRadius: 5,
-      width: '30%',
-      alignItems: 'center',
-},
-buttonText: {
-      fontWeight: 'bold',
-      fontSize: 18,
-      color: 'white',
-      fontFamily: 'Satoshi',
-},
+    backgroundColor: '#E36607', // Orange color
+    padding: 10,
+    borderRadius: 5,
+    width: '30%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'white',
+    fontFamily: 'Satoshi',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

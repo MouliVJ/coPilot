@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
+  Alert,
 } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import axios from 'axios';
@@ -21,13 +22,15 @@ const TakeRidePage = ({navigation}) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [data, setData] = useState([]);
+  const [fromError, setFromError] = useState('');
+  const [toError, setToError] = useState('');
   const route = useRoute();
   const id = (route.params as { id?: string })?.id ?? '';
   
   useEffect(() => {
     axios.get(`${API_URL}/getNodalPoints`)
       .then(response => {
-        const formattedData = response.data.map((value, index) => ({ key: index.toString(), value }));
+        const formattedData = response.data.map((value, index) => ({ key: index.toString(), value }));  
         setData(formattedData);
       })
       .catch(error => console.error('Error:', error));
@@ -35,11 +38,13 @@ const TakeRidePage = ({navigation}) => {
 
   const handleFromSelect = (val) => {
     setSelectedFrom(val);
+    setFromError('');
     console.log('Selected From:', val);
   };
 
   const handleToSelect = (val) => {
     setSelectedTo(val);
+    setToError('');
     console.log('Selected To:', val);
   };
 
@@ -64,6 +69,29 @@ const TakeRidePage = ({navigation}) => {
   };
 
   const handleSearch = () => {
+    setFromError('');
+    setToError('');
+    console.log('Selected From:', selectedFrom);
+    console.log('Selected To:', selectedTo);
+  
+    if (selectedFrom === selectedTo) {
+      setToError('To location should be different from From location');
+      return;
+    }
+    if (!selectedFrom && !selectedTo) {
+      setFromError('At least one location should be selected');
+      setToError('At least one location should be selected');
+      return;
+    }
+    if (selectedFrom.localeCompare('Office', undefined, {sensitivity: 'base'}) !== 0 && selectedTo.localeCompare('Office', undefined, {sensitivity: 'base'}) !== 0) {
+      setToError('At least one location should be "Office"');
+      setToError('At least one location should be "Office"');
+      return;
+    }
+  
+    // Ensure the selected date is not in the past
+
+
     // Combine date and time while keeping the local time zone
     const combinedDateTime = new Date(
       date.getFullYear(),
@@ -73,7 +101,10 @@ const TakeRidePage = ({navigation}) => {
       time.getMinutes(),
       time.getSeconds()
     );
-
+    if (combinedDateTime < new Date()) {
+      Alert.alert('Invalid Date/Time', 'Please select a future date and time.');
+      return;
+    }
     const requestBody = {
       id: id,
       from: selectedFrom,
@@ -85,10 +116,10 @@ const TakeRidePage = ({navigation}) => {
         .then(response => {
           const rides = response.data;
           navigation.navigate('PickRidePage', { id,rides })
-        console.log('Response:', response.data);
+          console.log('Response:', response.data);
         })
         .catch(error => {
-        console.error('Error:', error);
+          console.error('Error:', error);
         });
   };
 
@@ -111,6 +142,7 @@ const TakeRidePage = ({navigation}) => {
             save="value"
           />
         </View>
+        {fromError ? <Text style={styles.errorText}>{fromError}</Text> : null}
         <Text style={styles.title}>To</Text>
         <View style={styles.selectList}>
           <SelectList 
@@ -119,6 +151,7 @@ const TakeRidePage = ({navigation}) => {
             save="value"
           />
         </View>
+        {toError ? <Text style={styles.errorText}>{toError}</Text> : null}
         <Text style={styles.title}>Date</Text>
         <Pressable onPress={toggleDatePicker}>
           <TextInput
@@ -206,5 +239,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 5,
   },
 });

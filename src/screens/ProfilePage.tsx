@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from 'react';
-import { Alert,View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Alert, View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Image } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { API_URL } from '@env';
 
-const ProfilePage = ({navigation}) => {
+const ProfilePage = ({ navigation }) => {
   const [id, setId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(require('../Assets/image1.png')); // Default image
   const [profileImage, setProfileImage] = useState("1"); // Default image identifier
@@ -13,6 +13,11 @@ const ProfilePage = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNumber: ''
+  });
   const route = useRoute();
   const email = (route.params as { email?: string })?.email ?? '';
 
@@ -23,6 +28,41 @@ const ProfilePage = ({navigation}) => {
     { id: "4", source: require('../Assets/image4.png') },
   ];
 
+  const validateFields = () => {
+    const errorsCopy = { ...errors };
+    let isValid = true;
+
+    if (firstName.trim() === '') {
+      errorsCopy.firstName = 'First name is required';
+      isValid = false;
+    } else {
+      errorsCopy.firstName = '';
+    }
+
+    if (lastName.trim() === '') {
+      errorsCopy.lastName = 'Last name is required';
+      isValid = false;
+    } else {
+      errorsCopy.lastName = '';
+    }
+
+    if (!gender) {
+      Alert.alert('Error', 'Please select your gender');
+      isValid = false;
+    }
+
+    const phonePattern = /^[0-9]{10}$/; // Change as per your validation requirements
+    if (!phonePattern.test(phoneNumber)) {
+      errorsCopy.phoneNumber = 'Invalid phone number';
+      isValid = false;
+    } else {
+      errorsCopy.phoneNumber = '';
+    }
+
+    setErrors(errorsCopy);
+    return isValid;
+  };
+
   const handleImagePress = (image) => {
     setSelectedImage(image.source);
     setProfileImage(image.id);
@@ -31,8 +71,7 @@ const ProfilePage = ({navigation}) => {
 
   const handleGenderSelect = (selectedGender) => {
     setGender(selectedGender);
-  };
-
+  }; 
   useEffect(() => {
     console.log('Email:', email);
     axios.get(`${API_URL}/users/id?email=${email}`)
@@ -45,8 +84,11 @@ const ProfilePage = ({navigation}) => {
       });
   }, []);
 
-
   const handleSetProfile = () => {
+    if (!validateFields()) {
+      return;
+    }
+
     const profileData = {
       id,
       profileImage,
@@ -117,12 +159,16 @@ const ProfilePage = ({navigation}) => {
         value={firstName}
         onChangeText={setFirstName}
       />
+      {errors.firstName ? <Text style={styles.error}>{errors.firstName}</Text> : null}
+
       <TextInput
         style={styles.input}
         placeholder="Last Name"
         value={lastName}
         onChangeText={setLastName}
       />
+      {errors.lastName ? <Text style={styles.error}>{errors.lastName}</Text> : null}
+
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
@@ -130,6 +176,7 @@ const ProfilePage = ({navigation}) => {
         onChangeText={setPhoneNumber}
         keyboardType="phone-pad"
       />
+      {errors.phoneNumber ? <Text style={styles.error}>{errors.phoneNumber}</Text> : null}
 
       <TouchableOpacity style={styles.button} onPress={handleSetProfile}>
         <Text style={styles.buttonText}>Set Profile</Text>
@@ -217,6 +264,15 @@ const styles = StyleSheet.create({
     fontFamily: 'Satoshi',
     fontSize: 20,
   },
+
+  error: {
+    color: 'red',
+    marginBottom: 10,
+    fontFamily: 'Satoshi',
+    backgroundColor: 'white',
+    paddingLeft: 15,
+    paddingRight: 15,
+  }
 });
 
 export default ProfilePage;

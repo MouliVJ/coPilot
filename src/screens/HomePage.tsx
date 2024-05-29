@@ -57,7 +57,7 @@ const HomePage = ({ navigation }) => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    setPublishRidePressed(publishRidePressed);
+    setPublishRidePressed(false);
   };
 
   const handleSelectVehicle = () => {

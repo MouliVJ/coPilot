@@ -11,6 +11,7 @@ const AddVehiclePage = ({ navigation }) => {
   const userId = (route.params as { userId?: string })?.userId ?? '';
 
   const handleAddVehicle = () => {
+    
     // Validate input
     if (vehicleNumber.trim() === '') {
       // Alert user if any field is empty
@@ -40,7 +41,7 @@ const AddVehiclePage = ({ navigation }) => {
     setVehicleType('bike');
     setVehicleNumber('');
     Alert.alert('Vehicle added successfully');
-    navigation.navigate('HomePage',{id:userId});
+    navigation.navigate('HomePage',{id:userId,publishRidePressed:false});
   };
 
   return (
