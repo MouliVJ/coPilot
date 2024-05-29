@@ -13,7 +13,7 @@ import { API_URL } from '@env';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRoute } from '@react-navigation/native';
 
-const TakeRidePage = () => {
+const PublishRidePage = () => {
   const [selectedFrom, setSelectedFrom] = useState('');
   const [selectedTo, setSelectedTo] = useState('');
   const [date, setDate] = useState(new Date());
@@ -23,6 +23,7 @@ const TakeRidePage = () => {
   const [data, setData] = useState([]);
   const route = useRoute();
   const id = (route.params as { id?: string })?.id ?? '';
+  const vechileId = (route.params as { vechileId?: string })?.vechileId ?? '';
   
   useEffect(() => {
     axios.get(`${API_URL}/getNodalPoints`)
@@ -75,13 +76,14 @@ const TakeRidePage = () => {
     );
 
     const requestBody = {
-      id: id,
+        id: id,
+        vechileId: vechileId,
       from: selectedFrom,
       to: selectedTo,
-      dateTime: combinedDateTime.toISOString(),
+      dateTime: combinedDateTime.toISOString(), // Keep in local time zone before converting to ISO string
     };
     console.log('Request:', requestBody);
-    axios.post(`${API_URL}/takeRide`, requestBody)
+    axios.post(`${API_URL}/publishRide`, requestBody)
         .then(response => {
         console.log('Response:', response.data);
         })
@@ -90,7 +92,7 @@ const TakeRidePage = () => {
         });
   };
 
-  const formatDate = (date) => {  
+  const formatDate = (date) => {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
@@ -155,13 +157,13 @@ const TakeRidePage = () => {
         )}
       </View>
       <TouchableOpacity style={styles.button} onPress={handleSearch}>
-        <Text style={styles.buttonText}>Search Rides</Text>
+        <Text style={styles.buttonText}>Publish</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default TakeRidePage;
+export default PublishRidePage;
 
 const styles = StyleSheet.create({
   container: {
