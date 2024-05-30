@@ -1,79 +1,64 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# HOP Commute App
 
-# Getting Started
+HOP Commute is a mobile application that helps users manage and optimize their daily commutes. This guide will help you set up the development environment and run the application on an Android emulator.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Prerequisites
+#### Note : Refer to the backend repository README.md for detailed backend setup instructions. Then proceed with the following steps.
+Before you begin, ensure you have the following installed:
 
-## Step 1: Start the Metro Server
+- [Android Studio](https://developer.android.com/studio)
+- [Node.js](https://nodejs.org/) (which includes npm)
+- [Yarn](https://yarnpkg.com/getting-started/install)
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Setup
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Follow these steps to set up and run the HOP Commute app:
 
-```bash
-# using npm
-npm start
+### 1. Open the Project in Android Studio
+- Launch Android Studio.
+- Click on **File > Open** and navigate to the directory where you cloned the repository. Select the project directory and click OK.
 
-# OR using Yarn
+### 2. Configure the Android Emulator
+In Android Studio, click on the `Device Manager` button on the right sidebar or go to `View > Tool Windows > Device Manager`.
+Click on `Create Device`.
+Select `Pixel 8` as the device and click `Next`.
+Choose a system image (preferably API level 31) and click `Next`.
+Verify the configuration and click `Finish` to create the emulator.
+
+### 3. Start the Emulator
+In the `Device Manager`, you should now see the `Pixel 8` emulator listed. Click on the `Play` button next to it to start the emulator.
+
+### 4. Install Dependencies
+You can install Yarn using npm, which comes with Node.js. To install Yarn, follow the instructions below based on your operating system.
+
+1. Open your terminal or command prompt.
+2. Run the following command to install Yarn globally:
+```shell
+npm install --global yarn
+```
+3. Verify the installation by checking the Yarn version:
+```shell
+yarn --version
+```
+You should see the installed version of Yarn printed to the console.
+
+### 5. Install Project Dependencies
+Once Yarn is installed, open a terminal (you can use the one integrated in Android Studio or a separate terminal window) and navigate to the root directory of the cloned repository. Run the following command to install the required dependencies:
+
+```shell
+yarn install
+```
+If you encounter any permission issues, you may need to prefix the command with sudo (for macOS or Linux):
+```shell
+sudo yarn install
+```
+### 6. Start the Application
+With the dependencies installed, you can now start the application as android Run the following command in the terminal:
+```shell
 yarn start
 ```
+Then click `a` when metro is up
 
-## Step 2: Start your Application
+This command will compile the application and launch it in the Android emulator you started earlier.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+For further assistance, please contact `haripriya_sridharan@comcast.com` , `gowtham_rajendran@comcast.com` , `mouli_vijay@comcast.com` , `deeranchinnamalai_asokan@comcast.com` , `keerthana_d@comcast.com`.
