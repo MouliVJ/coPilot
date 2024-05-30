@@ -23,6 +23,8 @@ const PublishRidePage = ({navigation}) => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [data, setData] = useState([]);
   const route = useRoute();
+  const [fromError, setFromError] = useState('');
+  const [toError, setToError] = useState('');
   const id = (route.params as { id?: string })?.id ?? '';
   const vehicleId = (route.params as { selectedVehicleId?: string })?.selectedVehicleId ?? '';
   useEffect(() => {
@@ -65,6 +67,26 @@ const PublishRidePage = ({navigation}) => {
   };
 
   const handleSearch = () => {
+    setFromError('');
+    setToError('');
+    console.log('Selected From:', selectedFrom);
+    console.log('Selected To:', selectedTo);
+  
+    if (selectedFrom === selectedTo) {
+      setToError('To location should be different from From location');
+      return;
+    }
+    if (!selectedFrom && !selectedTo) {
+      setFromError('At least one location should be selected');
+      setToError('At least one location should be selected');
+      return;
+    }
+    if (selectedFrom.localeCompare('Office', undefined, {sensitivity: 'base'}) !== 0 && selectedTo.localeCompare('Office', undefined, {sensitivity: 'base'}) !== 0) {
+      setToError('At least one location should be "Office"');
+      setToError('At least one location should be "Office"');
+      return;
+    }
+  
     // Combine date and time while keeping the local time zone
     const combinedDateTime = new Date(
       date.getFullYear(),
@@ -74,7 +96,10 @@ const PublishRidePage = ({navigation}) => {
       time.getMinutes(),
       time.getSeconds()
     );
-
+    if (combinedDateTime < new Date()) {
+      Alert.alert('Invalid Date/Time', 'Please select a future date and time.');
+      return;
+    }
     const rider = {
         userId: id,
         vehicleId: vehicleId.toString(),
@@ -112,6 +137,7 @@ const PublishRidePage = ({navigation}) => {
             data={data} 
             save="value"
           />
+            {fromError ? <Text style={styles.errorText}>{fromError}</Text> : null}
         </View>
         <Text style={styles.title}>To</Text>
         <View style={styles.selectList}>
@@ -120,6 +146,7 @@ const PublishRidePage = ({navigation}) => {
             data={data} 
             save="value"
           />
+          {toError ? <Text style={styles.errorText}>{toError}</Text> : null}
         </View>
         <Text style={styles.title}>Date</Text>
         <Pressable onPress={toggleDatePicker}>
