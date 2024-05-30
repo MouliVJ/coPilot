@@ -6,14 +6,19 @@ import {
   StyleSheet,
   Modal,
   Pressable,
+  Image,
 } from 'react-native';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { API_URL } from '@env';
 
 const HomePage = ({ navigation }) => {
-  const [takeRidePressed, setTakeRidePressed] = useState(false);
-  const [publishRidePressed, setPublishRidePressed] = useState(false);
+  // const [takeRidePressed, setTakeRidePressed] = useState(false);
+  // const [publishRidePressed, setPublishRidePressed] = useState(false);
+  
+  
+      
+  
   const [userName, setUserName] = useState('User');
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
@@ -35,12 +40,12 @@ const HomePage = ({ navigation }) => {
 
   const handleTakeRidePress = () => {
     navigation.navigate('TakeRidePage', { id });
-    setTakeRidePressed(!takeRidePressed);
+    // setTakeRidePressed(!takeRidePressed);
   };
 
   const handlePublishRidePress = () => {
     setModalVisible(true);
-    setPublishRidePressed(!publishRidePressed);
+    // setPublishRidePressed(!publishRidePressed);
     axios
       .get(`${API_URL}/users/${id}/vehicle`)
       .then(response => {
@@ -57,7 +62,7 @@ const HomePage = ({ navigation }) => {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    setPublishRidePressed(false);
+    // setPublishRidePressed(false);
   };
 
   const handleSelectVehicle = () => {
@@ -68,21 +73,26 @@ const HomePage = ({ navigation }) => {
 
   const handleAddVehiclePress = () => {
     navigation.navigate('AddVehiclePage', { userId: id });
-    setPublishRidePressed(publishRidePressed);
+    // setPublishRidePressed(publishRidePressed);
   };
 
   return (
     <View style={styles.container}>
+    <View style={styles.buttonContainer1}>
+    { <TouchableOpacity  onPress={() => navigation.navigate('Menu')}>
+      <Image source={require('./assets/menu.png')} style={{ width: 24, height: 24, tintColor: '#FFF' }} />
+    </TouchableOpacity> }
+    </View>
       <Text style={styles.welcomeText}>Hello {userName}! Buckle up</Text>
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
-          style={[styles.button, takeRidePressed && styles.buttonPressed]}
+          style={[styles.button]}
           onPress={handleTakeRidePress}
         >
           <Text style={styles.buttonText}>🚀 Take a Ride</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, publishRidePressed && styles.buttonPressed]}
+          style={[styles.button]}
           onPress={handlePublishRidePress}
         >
           <Text style={styles.buttonText}>🚀 Publish a Ride</Text>
@@ -226,6 +236,11 @@ const styles = StyleSheet.create({
   vehicleText: {
     fontSize: 16,
     color: 'black',
+  },
+  buttonContainer1: {
+    position: 'absolute',
+    right:25,
+    top: 15,
   },
 });
 

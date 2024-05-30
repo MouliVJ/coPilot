@@ -63,7 +63,7 @@ const PickRidePage = ({ navigation }) => {
           <Text style={[styles.rideTime, { color }]}>{item.time}</Text>
         </View>
         <Text style={[styles.rideName, { color }]}></Text> 
-        <Text style={[styles.rideFare, { color }]}>Rs.{item.fare}</Text>
+        <Text style={[styles.rideFare, { color }]}>Rs {item.fare}</Text>
       </TouchableOpacity>
     );
   };

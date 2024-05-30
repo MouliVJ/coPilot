@@ -14,7 +14,7 @@ import { API_URL } from '@env';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRoute } from '@react-navigation/native';
 
-const TakeRidePage = ({navigation}) => {
+const TakeRidePage = ({ navigation }) => {
   const [selectedFrom, setSelectedFrom] = useState('');
   const [selectedTo, setSelectedTo] = useState('');
   const [date, setDate] = useState(new Date());
@@ -26,11 +26,11 @@ const TakeRidePage = ({navigation}) => {
   const [toError, setToError] = useState('');
   const route = useRoute();
   const id = (route.params as { id?: string })?.id ?? '';
-  
+
   useEffect(() => {
     axios.get(`${API_URL}/getNodalPoints`)
       .then(response => {
-        const formattedData = response.data.map((value, index) => ({ key: index.toString(), value }));  
+        const formattedData = response.data.map((value, index) => ({ key: index.toString(), value }));
         setData(formattedData);
       })
       .catch(error => console.error('Error:', error));
@@ -68,12 +68,25 @@ const TakeRidePage = ({navigation}) => {
     setTime(currentTime);
   };
 
+  const toIST = (date) => {
+    const offset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+    return new Date(date.getTime() + offset);
+  };
+
+  const formatDate = (date) => {
+    return date.toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata', month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  const formatTime = (time) => {
+    return time.toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true });
+  };
+
   const handleSearch = () => {
     setFromError('');
     setToError('');
     console.log('Selected From:', selectedFrom);
     console.log('Selected To:', selectedTo);
-  
+
     if (selectedFrom === selectedTo) {
       setToError('To location should be different from From location');
       return;
@@ -83,16 +96,12 @@ const TakeRidePage = ({navigation}) => {
       setToError('At least one location should be selected');
       return;
     }
-    if (selectedFrom.localeCompare('Office', undefined, {sensitivity: 'base'}) !== 0 && selectedTo.localeCompare('Office', undefined, {sensitivity: 'base'}) !== 0) {
-      setToError('At least one location should be "Office"');
+    if (selectedFrom.localeCompare('Office', undefined, { sensitivity: 'base' }) !== 0 && selectedTo.localeCompare('Office', undefined, { sensitivity: 'base' }) !== 0) {
       setToError('At least one location should be "Office"');
       return;
     }
-  
-    // Ensure the selected date is not in the past
 
-
-    // Combine date and time while keeping the local time zone
+    // Combine date and time in IST
     const combinedDateTime = new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -101,34 +110,31 @@ const TakeRidePage = ({navigation}) => {
       time.getMinutes(),
       time.getSeconds()
     );
-    if (combinedDateTime < new Date()) {
+
+    const combinedDateTimeIST = toIST(combinedDateTime);
+    if (combinedDateTimeIST < new Date()) {
       Alert.alert('Invalid Date/Time', 'Please select a future date and time.');
       return;
     }
+
     const requestBody = {
       id: id,
       from: selectedFrom,
       to: selectedTo,
-      dateTime: combinedDateTime.toISOString(),
+      dateTime: combinedDateTimeIST.toISOString(), // Ensure the ISO string is in IST
     };
+
     console.log('Request:', requestBody);
+
     axios.post(`${API_URL}/takeRide`, requestBody)
-        .then(response => {
-          const rides = response.data;
-          navigation.navigate('PickRidePage', { id,rides })
-          console.log('Response:', response.data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-  };
-
-  const formatDate = (date) => {  
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  };
-
-  const formatTime = (time) => {
-    return time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+      .then(response => {
+        const rides = response.data;
+        navigation.navigate('PickRidePage', { id, rides });
+        console.log('Response:', response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -136,18 +142,18 @@ const TakeRidePage = ({navigation}) => {
       <View style={styles.fromTo}>
         <Text style={styles.title}>From</Text>
         <View style={styles.selectList}>
-          <SelectList 
-            setSelected={handleFromSelect} 
-            data={data} 
+          <SelectList
+            setSelected={handleFromSelect}
+            data={data}
             save="value"
           />
         </View>
         {fromError ? <Text style={styles.errorText}>{fromError}</Text> : null}
         <Text style={styles.title}>To</Text>
         <View style={styles.selectList}>
-          <SelectList 
-            setSelected={handleToSelect} 
-            data={data} 
+          <SelectList
+            setSelected={handleToSelect}
+            data={data}
             save="value"
           />
         </View>

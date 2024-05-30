@@ -147,6 +147,10 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 20,
     fontFamily: 'Satoshi',
+    backgroundColor: 'white',
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 3,
   },
 });
 

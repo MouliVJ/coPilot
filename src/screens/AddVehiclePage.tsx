@@ -41,7 +41,7 @@ const AddVehiclePage = ({ navigation }) => {
     setVehicleType('bike');
     setVehicleNumber('');
     Alert.alert('Vehicle added successfully');
-    navigation.navigate('HomePage',{id:userId,publishRidePressed:false});
+    navigation.goBack();
   };
 
   return (

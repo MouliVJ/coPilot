@@ -16,6 +16,7 @@ import AddVehiclePage from './src/screens/AddVehiclePage';
 import ZeroPage from './src/screens/ZeroPage';
 import RideDetailsPage from './src/screens/RideDetailsPage';
 import PickRidePage from './src/screens/PickRidePage';
+import Menu from './src/screens/Menu';
 
 enableScreens();
 
@@ -27,15 +28,30 @@ function App() {
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={({ route }) => ({
-          headerShown: route.name !== 'LandingPage', // Hide header on LandingPage
+          headerShown: route.name !== 'LandingPage' && route.name !== 'HomePage', // Hide header on LandingPage
           headerTransparent: true,
           headerTitle: '',
           headerStyle: { backgroundColor: 'transparent' },
           headerBackTitleVisible: false,
-          headerLeft: () => <BackButton />,
-          headerRight: () => <MenuButton />,
-          
-        })}
+          headerRight: () => {
+            if (route.name !== 'Menu' && route.name !== 'LoginPage' && route.name !== 'SignupPage' ) {
+              return <MenuButton />;
+              
+            } else {
+              return null; // Don't render anything for Menu screen
+            }
+          },
+          headerLeft: () => {
+            if (route.name !== 'HomePage') {
+              return <BackButton />;
+              
+            } else {
+              return null; // Don't render anything for Menu screen
+            }
+          },
+          }
+        
+      )}
       >
         {/* <Stack.Screen name="TestPage" component={TestPage} /> */}
         <Stack.Screen name="LandingPage" component={LandingPage} />
@@ -48,6 +64,7 @@ function App() {
         <Stack.Screen name="AddVehiclePage" component={AddVehiclePage} />
         <Stack.Screen name="PickRidePage" component={PickRidePage} />
         <Stack.Screen name="RideDetailsPage" component={RideDetailsPage} />
+        <Stack.Screen name="Menu" component={Menu} />
         {/* Add more screens as needed */}
       </Stack.Navigator>
     </NavigationContainer>
@@ -69,10 +86,9 @@ const MenuButton = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.buttonContainer1}>
-      {/* <TouchableOpacity>
+      { <TouchableOpacity  onPress={() => navigation.navigate('Menu')}>
         <Image source={require('./src/Assets/menu.png')} style={{ width: 24, height: 24, tintColor: '#FFF' }} />
-      </TouchableOpacity> */}
-       <Text onPress={() => navigation.navigate('LandingPage')} style={styles.logout}>Logout</Text>
+      </TouchableOpacity> }
      </View>
     
   );
