@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: 'rgba(255, 255, 255, 0.6)', // 60% opacity white
     textAlign: "center",
-    marginBottom: 5,
+    marginBottom: 4,
   },
   sharedRideText: {
     color: '#99ffdd',
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: 20,
     fontFamily: "Satoshi",
     textAlign: 'center',
     marginBottom: 18,
