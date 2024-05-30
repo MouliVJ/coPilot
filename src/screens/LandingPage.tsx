@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, TextInput, TouchableOpacity, Text, Alert, StyleSheet, Dimensions } from 'react-native';
 import axios from 'axios';
 import { Image } from 'react-native-elements';
+import Config from 'react-native-config';
+import { API_URL } from '@env';
+
+
 
 const LandingPage = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -12,7 +16,7 @@ const LandingPage = ({ navigation }) => {
       return;
     }
     
-    axios.post(`http://10.0.2.2:8080/validateEmail`, { email })
+    axios.post(`${API_URL}/validateEmail`, { email })
       .then(response => {
         if (response.data === 'Sign Up') {
           navigation.navigate('SignupPage', { email });

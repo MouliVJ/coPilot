@@ -3,6 +3,7 @@ import { View, TextInput, Alert, TouchableOpacity, Text, StyleSheet } from 'reac
 import Checkbox from '@react-native-community/checkbox';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
+import { API_URL } from '@env';
 
 const SignUpPage = ({ navigation }) => {
   const [password, setPassword] = useState('');
@@ -36,7 +37,6 @@ const SignUpPage = ({ navigation }) => {
       setError('You must accept the terms and conditions.');
       return;
     }
-
     axios.post(`http://10.0.2.2:8080/signup`, { email, password })
       .then(response => {    
         if (response.data === 'Success') {  
