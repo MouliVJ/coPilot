@@ -3,12 +3,13 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet,Alert } from 'react
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { API_URL } from '@env';
+import { useId } from './utils/IdContext';
 
 const AddVehiclePage = ({ navigation }) => {
   const [vehicleType, setVehicleType] = useState('bike');
   const [vehicleNumber, setVehicleNumber] = useState('');
   const route = useRoute();
-  const userId = (route.params as { userId?: string })?.userId ?? '';
+  const userId = useId().id;
 
   const handleAddVehicle = () => {
     

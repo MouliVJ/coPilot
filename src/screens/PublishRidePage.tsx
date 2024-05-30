@@ -13,6 +13,7 @@ import axios from 'axios';
 import { API_URL } from '@env';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRoute } from '@react-navigation/native';
+import { useId } from './utils/IdContext';
 
 const PublishRidePage = ({ navigation }) => {
   const [selectedFrom, setSelectedFrom] = useState('');
@@ -25,9 +26,9 @@ const PublishRidePage = ({ navigation }) => {
   const route = useRoute();
   const [fromError, setFromError] = useState('');
   const [toError, setToError] = useState('');
-  const id = (route.params as { id?: string })?.id ?? '';
+  const id = useId().id;
   const vehicleId = (route.params as { selectedVehicleId?: string })?.selectedVehicleId ?? '';
-
+  console.log('ID:', id);
   useEffect(() => {
     axios.get(`${API_URL}/getNodalPoints`)
       .then(response => {
@@ -132,7 +133,7 @@ const PublishRidePage = ({ navigation }) => {
       .then(response => {
         console.log('Response:', response.data);
         Alert.alert('Ride Published Successfully');
-        navigation.navigate('HomePage', { id });
+        navigation.navigate('HomePage');
       })
       .catch(error => {
         console.error('Error:', error);

@@ -3,9 +3,10 @@ import { Alert, View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Imag
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { API_URL } from '@env';
+import { useId } from './utils/IdContext';
 
 const ProfilePage = ({ navigation }) => {
-  const [id, setId] = useState(null);
+  const { id, setId } = useId();
   const [selectedImage, setSelectedImage] = useState(require('../Assets/image1.png')); // Default image
   const [profileImage, setProfileImage] = useState("1"); // Default image identifier
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -72,18 +73,6 @@ const ProfilePage = ({ navigation }) => {
   const handleGenderSelect = (selectedGender) => {
     setGender(selectedGender);
   }; 
-  useEffect(() => {
-    console.log('Email:', email);
-    axios.get(`${API_URL}/users/id?email=${email}`)
-      .then(response => {    
-       console.log('ID: ' + response.data);
-        setId(response.data);
-      })
-      .catch(error => {
-        Alert.alert('Error fetching id: ' + error.message);
-      });
-  }, []);
-
   const handleSetProfile = () => {
     if (!validateFields()) {
       return;
@@ -108,7 +97,7 @@ const ProfilePage = ({ navigation }) => {
     })
       .then(response => {
         console.log('Profile set!', response.data);
-        navigation.navigate('HomePage', { id });
+        navigation.navigate('HomePage');
       })
       .catch(error => {
         console.error('There was an error setting the profile!', error);

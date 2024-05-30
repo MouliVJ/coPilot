@@ -5,6 +5,7 @@ import { API_URL } from '@env';
 import { RideDetails } from './utils/RideDetails';
 import { useRoute } from '@react-navigation/native';
 import ProfilePage from './ProfilePage';
+import { useId } from './utils/IdContext';
 
 const RideDetailsPage = ({navigation}) => {
   const [riderInfo, setRiderInfo] = useState(null);
@@ -14,6 +15,7 @@ const RideDetailsPage = ({navigation}) => {
   const [riderId, setRiderId] = useState('');
   const [uri,setUri] = useState('../Assets/image1.png');
   const route = useRoute();
+  const id = useId().id;
 type RouteParams = {
     rideDetails: RideDetails;
 };
@@ -72,7 +74,7 @@ const handleCancelRide = async () => {
     try {
         const response = await axios.delete(`${API_URL}/${rideDetails.id}/deleteRide`);
         Alert.alert('Ride Cancelled');
-        navigation.navigate('HomePage',{passengerId});
+        navigation.navigate('HomePage');
     } catch (error) {
         Alert.alert('Error fetching rider info: ' + (error as Error).message);
     }

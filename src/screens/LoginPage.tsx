@@ -4,9 +4,10 @@ import { Alert,View, TextInput, TouchableOpacity, Button, Text, StyleSheet } fro
 import axios from 'axios'; 
 import { useRoute } from '@react-navigation/native';
 import { API_URL } from '@env';
+import { useId } from './utils/IdContext';
 
 const LoginPage = ({navigation}) => {
-  const [id, setId] = useState(null);
+  const { id, setId } = useId();
   const [password, setPassword] = useState('');
   const route = useRoute();
   const email = (route.params as { email?: string })?.email ?? '';

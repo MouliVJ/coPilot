@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { API_URL } from '@env';
 import { Ride } from './utils/Ride'; // Replace '../path/to/Ride' with the actual path to the Ride type file
 import { useId } from './utils/IdContext';
-
 type RootStackParamList = {
   PickRidePage: { rides: Ride[] }; // Replace Ride[] with the actual type of your rides
 };
 
 
-const PickRidePage = ({ navigation }) => {
+const BookedRidesPage = ({ navigation }) => {
   const [selectedRide, setSelectedRide] = useState<string | null>(null);
   const route = useRoute();
   const id = useId().id;
@@ -26,13 +25,9 @@ const PickRidePage = ({ navigation }) => {
 
     try {
       const request = 
-      console.log('Requesting ride:', rides.find((ride) => ride.rideId === selectedRide));
-      const response = await axios.post(`${API_URL}/createRide`,{
-        passengerId: id,
-        rideDetails: rides.find((ride) => ride.rideId === selectedRide),
-      });
-
-      if (response.status === 201) {
+      console.log('Requesting ride:', rides.find((ride) => ride.id === selectedRide));
+      const response = await axios.post(`${API_URL}/${id}/getRide`);
+      if (response.status === 200) {
         // Assuming the response contains the details of the requested ride
         const requestedRide = response.data;
         console.log('Ride requested:', requestedRide);
@@ -47,24 +42,26 @@ const PickRidePage = ({ navigation }) => {
   };
 
   const renderItem = ({ item }) => {
-    const icon = item.type === 'car' ? require('./assets/car.png') : require('./assets/bike.png');
-    const iconTintColor = item.rideId === selectedRide ? 'white' : (item.gender === 'female' ? 'pink' : 'black');
-    const backgroundColor = item.rideId === selectedRide ? '#E36607' : 'white';
-    const color = item.rideId === selectedRide ? 'white' : 'black';
+    const icon = item.rideDetails.type === 'car' ? require('./assets/car.png') : require('./assets/bike.png');
+    const iconTintColor = item.id === selectedRide ? 'white' : (item.rideDetails.gender === 'female' ? 'pink' : 'black');
+    const backgroundColor = item.id === selectedRide ? '#E36607' : 'white';
+    const color = item.id === selectedRide ? 'white' : 'black';
 
     return (
       <TouchableOpacity
         style={[styles.rideItem, { backgroundColor }]}
-        onPress={() => setSelectedRide(item.rideId)}
+        onPress={() => setSelectedRide(item.id)}
       >
         <Image source={icon} style={[styles.icon, { tintColor: iconTintColor }]} />
         <View>
-          <Text style={[styles.rideName, { color }]}>{item.name}</Text>
-          <Text style={[styles.rideDate, { color }]}>{item.date}</Text>
-          <Text style={[styles.rideTime, { color }]}>{item.time}</Text>
+          <Text style={[styles.rideName, { color }]}>{item.rideDetails.name}</Text>
+          <Text style={[styles.rideFrom, { color }]}>{item.rideDetails.from}</Text>
+          <Text style={[styles.rideTo, { color }]}>{item.rideDetails.to}</Text>
+          <Text style={[styles.rideDate, { color }]}>{item.rideDetails.date}</Text>
+          <Text style={[styles.rideTime, { color }]}>{item.rideDetails.time}</Text>
         </View>
         <Text style={[styles.rideName, { color }]}></Text> 
-        <Text style={[styles.rideFare, { color }]}>Rs {item.fare}</Text>
+        <Text style={[styles.rideFare, { color }]}>Rs {item.rideDetails.fare}</Text>
       </TouchableOpacity>
     );
   };
@@ -72,22 +69,22 @@ const PickRidePage = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.list}>
-        <Text style={styles.title}>Pick a ride</Text>
+        <Text style={styles.title}>Booked Rides</Text>
         <FlatList
           data={rides}
           renderItem={renderItem}
-          keyExtractor={(item) => item.rideId}
+          keyExtractor={(item) => item.id}
         />
 
         {selectedRide && (
           <View style={styles.footer}>
             <TouchableOpacity style={styles.requestButton} onPress={handleRequestRide}>
-              <Text style={styles.requestButtonText}>Request Ride</Text>
+              <Text style={styles.requestButtonText}>View Ride</Text>
             </TouchableOpacity>
           </View>
         )}
       </View>
-    </View>
+  </View>
   );
 };
 
@@ -173,6 +170,19 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 23,
   },
+  rideFrom: {
+    fontSize: 14,
+    color: '#555',
+    paddingLeft: 10,
+    paddingTop: 23,
+  },
+  rideTo:{
+    position: 'relative',
+    fontSize: 14,
+    color: '#555',
+    paddingLeft: 10,
+    paddingTop: 23,
+  }
 });
 
-export default PickRidePage;
+export default BookedRidesPage;

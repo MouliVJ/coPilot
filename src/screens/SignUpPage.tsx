@@ -4,6 +4,7 @@ import Checkbox from '@react-native-community/checkbox';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { API_URL } from '@env';
+import { useId } from './utils/IdContext';
 
 const SignUpPage = ({ navigation }) => {
   const [password, setPassword] = useState('');
@@ -12,6 +13,20 @@ const SignUpPage = ({ navigation }) => {
   const [error, setError] = useState('');
   const route = useRoute();
   const email = (route.params as { email?: string })?.email ?? '';
+
+  const {id,setId} = useId();
+
+  const getId = () => {
+    console.log('Email:', email);
+    axios.get(`${API_URL}/users/id?email=${email}`)
+      .then(response => {    
+       console.log('ID: ' + response.data);
+        setId(response.data);
+      })
+      .catch(error => {
+        Alert.alert('Error fetching id: ' + error.message);
+      });
+  }
 
   const handleSignUp = () => {
     // Clear previous error
@@ -40,6 +55,7 @@ const SignUpPage = ({ navigation }) => {
     axios.post(`http://10.0.2.2:8080/signup`, { email, password })
       .then(response => {    
         if (response.data === 'Success') {  
+          getId();
           navigation.navigate('ProfilePage', { email });
         }
       })

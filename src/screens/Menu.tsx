@@ -1,8 +1,38 @@
 // screens/Menu.js
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useId } from './utils/IdContext';
 
+import { API_URL } from '@env';
+import axios from 'axios';
 const Menu = ({ navigation }) => {
+    
+    const handleBookedRides = () => {
+        axios.get(`${API_URL}/${id}/bookedRides`)
+        .then(response => {
+          const rides = response.data;
+          navigation.navigate('BookedRidesPage', { rides });
+          console.log('Response:', response.data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      };
+      const handlePublishedRides = () => {
+        axios.get(`${API_URL}/${id}/publishedRides`)
+        .then(response => {
+          const rides = response.data;
+          navigation.navigate('ViewPublishedRidesPage', { rides });
+          console.log('Response:', response.data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      };
+
+const id =useId().id;
+console.log('ID:', id);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.navigate('HomePage')} style={styles.menuItem}>
@@ -14,10 +44,10 @@ const Menu = ({ navigation }) => {
       <TouchableOpacity onPress={() => navigation.navigate('AddVehiclePage')} style={styles.menuItem}>
         <Text style={styles.menuText}>Add Vehicle</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('BookedRides')} style={styles.menuItem}>
+      <TouchableOpacity onPress={(handleBookedRides)} style={styles.menuItem}>
         <Text style={styles.menuText}>Booked Rides</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('PublishedRides')} style={styles.menuItem}>
+      <TouchableOpacity onPress={(handlePublishedRides)} style={styles.menuItem}>
         <Text style={styles.menuText}>Published Rides</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('LandingPage')} style={styles.menuItem}>

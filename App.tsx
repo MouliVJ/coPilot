@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { enableScreens } from 'react-native-screens';
 import { TouchableOpacity, Image, View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'; // Import Image from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import { IdProvider } from './src/screens/utils/IdContext';
 import LandingPage from './src/screens/LandingPage';
 import SignupPage from './src/screens/SignUpPage';
 import ProfilePage from './src/screens/ProfilePage';
@@ -17,6 +17,8 @@ import ZeroPage from './src/screens/ZeroPage';
 import RideDetailsPage from './src/screens/RideDetailsPage';
 import PickRidePage from './src/screens/PickRidePage';
 import Menu from './src/screens/Menu';
+import BookedRidesPage from './src/screens/BookedRidesPage';
+import ViewPublishedRidesPage from './src/screens/ViewPublishedRidesPage';
 
 enableScreens();
 
@@ -24,6 +26,7 @@ const Stack = createNativeStackNavigator();
 
 function App() {
   return (
+    <IdProvider>
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Home"
@@ -64,10 +67,13 @@ function App() {
         <Stack.Screen name="AddVehiclePage" component={AddVehiclePage} />
         <Stack.Screen name="PickRidePage" component={PickRidePage} />
         <Stack.Screen name="RideDetailsPage" component={RideDetailsPage} />
+        <Stack.Screen name="BookedRidesPage" component={BookedRidesPage} />
+        <Stack.Screen name="ViewPublishedRidesPage" component={ViewPublishedRidesPage} />
         <Stack.Screen name="Menu" component={Menu} />
         {/* Add more screens as needed */}
       </Stack.Navigator>
     </NavigationContainer>
+    </IdProvider>
   );
 }
 
@@ -86,7 +92,7 @@ const MenuButton = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.buttonContainer1}>
-      { <TouchableOpacity  onPress={() => navigation.navigate('Menu')}>
+      { <TouchableOpacity  onPress={() => navigation.navigate('Menu',{id})}>
         <Image source={require('./src/Assets/menu.png')} style={{ width: 24, height: 24, tintColor: '#FFF' }} />
       </TouchableOpacity> }
      </View>

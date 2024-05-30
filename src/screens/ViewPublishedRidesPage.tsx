@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image, ScrollView, Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import { API_URL } from '@env';
 import { Ride } from './utils/Ride'; // Replace '../path/to/Ride' with the actual path to the Ride type file
 import { useId } from './utils/IdContext';
-
 type RootStackParamList = {
   PickRidePage: { rides: Ride[] }; // Replace Ride[] with the actual type of your rides
 };
 
 
-const PickRidePage = ({ navigation }) => {
+const ViewPublishedRidesPage = ({ navigation }) => {
   const [selectedRide, setSelectedRide] = useState<string | null>(null);
   const route = useRoute();
   const id = useId().id;
@@ -21,50 +20,51 @@ const PickRidePage = ({ navigation }) => {
 
   const [rides, setRides] = useState((route.params as RouteParams)?.rides || []);
 
-  const handleRequestRide = async () => {
+  const handleCancelRide = async () => {
     if (!selectedRide) return;
 
     try {
-      const request = 
-      console.log('Requesting ride:', rides.find((ride) => ride.rideId === selectedRide));
-      const response = await axios.post(`${API_URL}/createRide`,{
-        passengerId: id,
-        rideDetails: rides.find((ride) => ride.rideId === selectedRide),
-      });
-
-      if (response.status === 201) {
-        // Assuming the response contains the details of the requested ride
-        const requestedRide = response.data;
-        console.log('Ride requested:', requestedRide);
-        navigation.navigate('RideDetailsPage', { rideDetails : requestedRide });
+      const requestRide = rides.find((ride) => ride.publishedRideId === selectedRide);
+  
+      console.log('Requesting ride:',requestRide?.publishedRideId==selectedRide);
+      if (requestRide) {
+        const response = await axios.delete(`${API_URL}/${requestRide.publishedRideId}/cancelRide`);
+        if (response.status === 200) {
+          // Assuming the response contains the details of the requested ride
+          Alert.alert(response.data);
+          navigation.goBack();
+        } else {
+          // Handle error response
+          console.error('Failed to request ride:', response.data);
+        }
       } else {
-        // Handle error response
-        console.error('Failed to request ride:', response.data);
+        console.error('Failed to find ride:', selectedRide);
       }
     } catch (error) {
-      console.error('Error requesting ride:', error);
+      console.error('Error cancelling ride:', error);
     }
   };
 
   const renderItem = ({ item }) => {
     const icon = item.type === 'car' ? require('./assets/car.png') : require('./assets/bike.png');
-    const iconTintColor = item.rideId === selectedRide ? 'white' : (item.gender === 'female' ? 'pink' : 'black');
-    const backgroundColor = item.rideId === selectedRide ? '#E36607' : 'white';
-    const color = item.rideId === selectedRide ? 'white' : 'black';
+    const iconTintColor = item.publishedRideId === selectedRide ? 'white' : (item.gender === 'female' ? 'pink' : 'black');
+    const backgroundColor = item.publishedRideId === selectedRide ? '#E36607' : 'white';
+    const color = item.publishedId === selectedRide ? 'white' : 'black';
 
     return (
       <TouchableOpacity
         style={[styles.rideItem, { backgroundColor }]}
-        onPress={() => setSelectedRide(item.rideId)}
+        onPress={() => setSelectedRide(item.publishedRideId)}
       >
         <Image source={icon} style={[styles.icon, { tintColor: iconTintColor }]} />
         <View>
           <Text style={[styles.rideName, { color }]}>{item.name}</Text>
+          <Text style={[styles.rideFrom, { color }]}><Text style={[styles.bold]} >From</Text> - {item.from}                   <Text style={[styles.bold]} >To</Text> - {item.to}</Text>
+          <Text style={[styles.rideTo, { color }]}> </Text>
+         
           <Text style={[styles.rideDate, { color }]}>{item.date}</Text>
           <Text style={[styles.rideTime, { color }]}>{item.time}</Text>
         </View>
-        <Text style={[styles.rideName, { color }]}></Text> 
-        <Text style={[styles.rideFare, { color }]}>Rs {item.fare}</Text>
       </TouchableOpacity>
     );
   };
@@ -72,22 +72,23 @@ const PickRidePage = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.list}>
-        <Text style={styles.title}>Pick a ride</Text>
+        <Text style={styles.title}>Published Rides</Text>
         <FlatList
           data={rides}
           renderItem={renderItem}
-          keyExtractor={(item) => item.rideId}
+          keyExtractor={(item) => item.publishedId}
         />
 
         {selectedRide && (
           <View style={styles.footer}>
-            <TouchableOpacity style={styles.requestButton} onPress={handleRequestRide}>
-              <Text style={styles.requestButtonText}>Request Ride</Text>
+            <TouchableOpacity style={styles.requestButton} onPress={handleCancelRide}>
+              <Text style={styles.requestButtonText}>Cancel Published Ride</Text>
             </TouchableOpacity>
           </View>
         )}
       </View>
-    </View>
+  </View>
+  
   );
 };
 
@@ -173,6 +174,20 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingTop: 23,
   },
+  rideFrom: {
+    fontSize: 14,
+    color: '#555',
+    paddingLeft: 10,
+  },
+  rideTo:{
+    position: 'relative',
+    fontSize: 14,
+    color: '#555',
+    marginLeft: 'auto',
+  },
+  bold : {
+    fontWeight: 'bold',
+  }
 });
 
-export default PickRidePage;
+export default ViewPublishedRidesPage;

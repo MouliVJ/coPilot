@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -11,35 +12,37 @@ import {
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { API_URL } from '@env';
+import { useId } from './utils/IdContext';
 
 const HomePage = ({ navigation }) => {
-  // const [takeRidePressed, setTakeRidePressed] = useState(false);
-  // const [publishRidePressed, setPublishRidePressed] = useState(false);
-  
-  
-      
   
   const [userName, setUserName] = useState('User');
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const route = useRoute();
-  const id = (route.params as { id?: string })?.id ?? '';
+  const id = useId().id;
 
   console.log(`${API_URL}/users/${id}/firstname`);
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/users/${id}/firstname`)
-      .then(response => {
-        setUserName(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching user name:', error);
-      });
-  }, [id]);
+  useFocusEffect(
+    React.useCallback(() => {
+      axios
+        .get(`${API_URL}/users/${id}/firstname`)
+        .then(response => {
+          setUserName(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching user name:', error);
+        });
+  
+      // Return a cleanup function to cancel the axios request if the component is unmounted
+      return () => {
+        axios.CancelToken.source().cancel();
+      };
+    }, [id])
+  );
 
   const handleTakeRidePress = () => {
-    navigation.navigate('TakeRidePage', { id });
+    navigation.navigate('TakeRidePage');
     // setTakeRidePressed(!takeRidePressed);
   };
 
@@ -68,11 +71,11 @@ const HomePage = ({ navigation }) => {
   const handleSelectVehicle = () => {
     setModalVisible(false);
     console.log('Vehicle Id:', selectedVehicleId);
-    navigation.navigate('PublishRidePage', { id, selectedVehicleId });
+    navigation.navigate('PublishRidePage', {  selectedVehicleId });
   };
 
   const handleAddVehiclePress = () => {
-    navigation.navigate('AddVehiclePage', { userId: id });
+    navigation.navigate('AddVehiclePage');
     // setPublishRidePressed(publishRidePressed);
   };
 
