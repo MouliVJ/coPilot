@@ -34,10 +34,9 @@ const LandingPage = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <Image source={require('../Assets/image5.png')} style={{ width: 200, height: 200 }} />
-      <Text style={styles.findYourNextText}>Find your next</Text>
-      <Text style={styles.sharedRideText}>Shared Ride</Text>
-      <Text style={styles.welcomeText}>Welcome, Let’s get started</Text>
+      <Image source={require('./assets/logo_white.png')} style={{ width: 120, height: 120 }} />
+      <Text style={styles.sharedRideText}>HOP</Text>
+      <Text style={styles.welcomeText}>Find your next shared ride</Text>
       <TextInput
         style={styles.input}
         onChangeText={setEmail}
@@ -57,9 +56,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#071D21',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent:'flex-end',
     alignItems: 'center',
     paddingHorizontal: 50,
+
   },
   findYourNextText: {
     fontFamily: "Satoshi",
@@ -70,16 +70,20 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   sharedRideText: {
-    color: '#99ffdd',
-    fontWeight: '500', // Medium
+    color: 'white',
+    fontWeight: '900', // Medium
     fontSize: 30,
-    fontFamily: "Satoshi",
+    fontFamily: "serif",
     textAlign: 'center',
     marginBottom: 20,
+    alignContent: 'center',
+    justifyContent: 'center',
+    paddingBottom:200,
+    opacity:0.80,
   },
   welcomeText: {
     color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: "Satoshi",
     textAlign: 'center',
     marginBottom: 18,
@@ -100,6 +104,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 80,
   },
   buttonText: {
     color: 'white',

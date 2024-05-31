@@ -7,7 +7,7 @@ import { useId } from './utils/IdContext';
 
 const ProfilePage = ({ navigation }) => {
   const { id, setId } = useId();
-  const [selectedImage, setSelectedImage] = useState(require('../Assets/image1.png')); // Default image
+  const [selectedImage, setSelectedImage] = useState(require('./assets/profile1.jpeg')); // Default image
   const [profileImage, setProfileImage] = useState("1"); // Default image identifier
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [gender, setGender] = useState('');
@@ -23,10 +23,10 @@ const ProfilePage = ({ navigation }) => {
   const email = (route.params as { email?: string })?.email ?? '';
 
   const availableAvatars = [
-    { id: "1", source: require('../Assets/image1.png') },
-    { id: "2", source: require('../Assets/image2.png') },
-    { id: "3", source: require('../Assets/image3.png') },
-    { id: "4", source: require('../Assets/image4.png') },
+    { id: "1", source: require('./assets/profile1.jpeg') },
+    { id: "2", source: require('./assets/profile2.jpeg') },
+    { id: "3", source: require('./assets/profile3.png') },
+    { id: "4", source: require('./assets/profile4.jpeg') },
   ];
 
   const validateFields = () => {
