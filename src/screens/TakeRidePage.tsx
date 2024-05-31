@@ -117,7 +117,7 @@ const TakeRidePage = ({ navigation }) => {
   
     const now = moment().tz("Asia/Kolkata").toDate();
 console.log('Current Date/Time:', now);
-    if (combinedDateTimeIST < now) {
+    if (combinedDateTime < now) {
       Alert.alert('Invalid Date/Time', 'Please select a future date and time.');
       return;
     }

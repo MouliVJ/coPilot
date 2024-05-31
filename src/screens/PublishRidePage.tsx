@@ -114,7 +114,7 @@ const PublishRidePage = ({ navigation }) => {
     );
 
     const combinedDateTimeIST = toIST(combinedDateTime);
-    if (combinedDateTimeIST < new Date()) {
+    if (combinedDateTime < new Date()) {
       Alert.alert('Invalid Date/Time', 'Please select a future date and time.');
       return;
     }
