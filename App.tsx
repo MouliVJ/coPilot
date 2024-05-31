@@ -92,7 +92,7 @@ const MenuButton = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.buttonContainer1}>
-      { <TouchableOpacity  onPress={() => navigation.navigate('Menu',{id})}>
+      { <TouchableOpacity  onPress={() => navigation.navigate('Menu')}>
         <Image source={require('./src/Assets/menu.png')} style={{ width: 24, height: 24, tintColor: '#FFF' }} />
       </TouchableOpacity> }
      </View>

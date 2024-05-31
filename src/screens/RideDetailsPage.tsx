@@ -22,12 +22,11 @@ type RouteParams = {
 
 const rideDetails = (route.params as RouteParams)?.rideDetails || null;
 const availableAvatars = [
-    { id: "1", source: require('../Assets/image1.png') },
-    { id: "2", source: require('../Assets/image2.png') },
-    { id: "3", source: require('../Assets/image3.png') },
-    { id: "4", source: require('../Assets/image4.png') },
-  ];
-
+  { id: "1", source: require('./assets/profile1.jpeg') },
+  { id: "2", source: require('./assets/profile2.jpeg') },
+  { id: "3", source: require('./assets/profile3.png') },
+  { id: "4", source: require('./assets/profile4.jpeg') },
+];
 
 const fetchRiderInfo = async () => {
     if (!riderId) {

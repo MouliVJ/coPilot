@@ -26,10 +26,10 @@ const PickRidePage = ({ navigation }) => {
 
     try {
       const request = 
-      console.log('Requesting ride:', rides.find((ride) => ride.rideId === selectedRide));
+      console.log('Requesting ride:', rides.find((ride) => ride.publishedRideId === selectedRide));
       const response = await axios.post(`${API_URL}/createRide`,{
         passengerId: id,
-        rideDetails: rides.find((ride) => ride.rideId === selectedRide),
+        rideDetails: rides.find((ride) => ride.publishedRideId === selectedRide),
       });
 
       if (response.status === 201) {
@@ -48,14 +48,14 @@ const PickRidePage = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     const icon = item.type === 'car' ? require('./assets/car.png') : require('./assets/bike.png');
-    const iconTintColor = item.rideId === selectedRide ? 'white' : (item.gender === 'female' ? 'pink' : 'black');
-    const backgroundColor = item.rideId === selectedRide ? '#E36607' : 'white';
-    const color = item.rideId === selectedRide ? 'white' : 'black';
+    const iconTintColor = item.publishedRideId === selectedRide ? 'white' : (item.gender === 'female' ? 'pink' : 'black');
+    const backgroundColor = item.publishedRideId === selectedRide ? '#E36607' : 'white';
+    const color = item.publishedRideId === selectedRide ? 'white' : 'black';
 
     return (
       <TouchableOpacity
         style={[styles.rideItem, { backgroundColor }]}
-        onPress={() => setSelectedRide(item.rideId)}
+        onPress={() => setSelectedRide(item.publishedRideId)}
       >
         <Image source={icon} style={[styles.icon, { tintColor: iconTintColor }]} />
         <View>
@@ -76,7 +76,7 @@ const PickRidePage = ({ navigation }) => {
         <FlatList
           data={rides}
           renderItem={renderItem}
-          keyExtractor={(item) => item.rideId}
+          keyExtractor={(item) => item.publishedRideId}
         />
 
         {selectedRide && (

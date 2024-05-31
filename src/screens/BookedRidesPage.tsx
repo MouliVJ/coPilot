@@ -24,17 +24,21 @@ const BookedRidesPage = ({ navigation }) => {
     if (!selectedRide) return;
 
     try {
-      const request = 
-      console.log('Requesting ride:', rides.find((ride) => ride.id === selectedRide));
-      const response = await axios.post(`${API_URL}/${id}/getRide`);
-      if (response.status === 200) {
-        // Assuming the response contains the details of the requested ride
-        const requestedRide = response.data;
-        console.log('Ride requested:', requestedRide);
-        navigation.navigate('RideDetailsPage', { rideDetails : requestedRide });
+      const selectRide = rides.find((ride) => ride.id === selectedRide);
+      if (selectRide) {
+        console.log('ride id:', selectRide.id);
+        const response = await axios.get(`${API_URL}/${selectRide.id}/getRide`);
+        if (response.status === 200) {
+          // Assuming the response contains the details of the requested ride
+          const requestedRide = response.data;
+          console.log('View Ride requested:', requestedRide);
+          navigation.navigate('RideDetailsPage', { rideDetails: requestedRide });
+        } else {
+          // Handle error response
+          console.error('Failed to request ride:', response.data);
+        }
       } else {
-        // Handle error response
-        console.error('Failed to request ride:', response.data);
+        console.error('Selected ride not found');
       }
     } catch (error) {
       console.error('Error requesting ride:', error);

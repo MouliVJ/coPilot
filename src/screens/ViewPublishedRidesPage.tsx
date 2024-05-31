@@ -58,9 +58,8 @@ const ViewPublishedRidesPage = ({ navigation }) => {
       >
         <Image source={icon} style={[styles.icon, { tintColor: iconTintColor }]} />
         <View>
-          <Text style={[styles.rideName, { color }]}>{item.name}</Text>
-          <Text style={[styles.rideFrom, { color }]}><Text style={[styles.bold]} >From</Text> - {item.from}                   <Text style={[styles.bold]} >To</Text> - {item.to}</Text>
-          <Text style={[styles.rideTo, { color }]}> </Text>
+          <Text style={[styles.rideFrom, { color }]}><Text style={[styles.bold]} >From</Text> - {item.from}  </Text>
+          <Text style={[styles.rideFrom, { color }]}><Text style={[styles.bold]} >To</Text> - {item.to}</Text>
          
           <Text style={[styles.rideDate, { color }]}>{item.date}</Text>
           <Text style={[styles.rideTime, { color }]}>{item.time}</Text>
@@ -175,7 +174,7 @@ const styles = StyleSheet.create({
     paddingTop: 23,
   },
   rideFrom: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#555',
     paddingLeft: 10,
   },

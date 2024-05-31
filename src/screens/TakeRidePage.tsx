@@ -14,6 +14,7 @@ import { API_URL } from '@env';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRoute } from '@react-navigation/native';
 import { useId } from './utils/IdContext';
+import moment from 'moment-timezone';
 
 const TakeRidePage = ({ navigation }) => {
   const [selectedFrom, setSelectedFrom] = useState('');
@@ -112,7 +113,11 @@ const TakeRidePage = ({ navigation }) => {
     );
 
     const combinedDateTimeIST = toIST(combinedDateTime);
-    if (combinedDateTimeIST < new Date()) {
+    console.log('Combined Date/Time:', combinedDateTimeIST);
+  
+    const now = moment().tz("Asia/Kolkata").toDate();
+console.log('Current Date/Time:', now);
+    if (combinedDateTimeIST < now) {
       Alert.alert('Invalid Date/Time', 'Please select a future date and time.');
       return;
     }
